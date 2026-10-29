@@ -1,172 +1,162 @@
-.elements-position {
+:host {
+  display: block;
+}
+
+.ct {
+  padding: clamp(80px, 12vw, 160px) 0 clamp(60px, 8vw, 110px);
+  background:
+    radial-gradient(800px 480px at 15% 20%, rgba(0, 59, 140, 0.55), transparent 70%),
+    var(--ink-0);
+}
+
+.ct__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(36px, 7vw, 110px);
+  align-items: start;
+}
+
+.ct__intro {
   display: flex;
-  justify-content: space-between;
-}
-.img-position {
-  padding-right: 10px;
-  padding-top: 90px;
-
-}
-
-.img-position img{
-  transition: transform 0.3s ease;
-  image-rendering: crisp-edges; /* melhora nitidez em alguns navegadores */
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.img-position img:hover{
-  transform: rotate(5deg);
-}
-
-.text-position {
-  color: #ffffff;
-  padding-right: 60px;
-  padding-top: 52px;
-}
-
-.text-position h1 {
-  font-size: 36px;
-  margin-bottom: 12px;
-  max-width: 400px;
-}
-
-.text-position span{
-  text-decoration: underline;
-}
-
-.text-position p {
-  font-size: 16px;
-  margin-bottom: 40px;
-  max-width: 390px;
-}
-
-.btn-position {
-  display: flex;
+  flex-direction: column;
   gap: 28px;
-  justify-content: center;
 }
 
-.btn-position button {
-  width: 230px;
-  height: 43px;
-  border: none;
-  border-radius: 7px;
-  color: #ffffff;
+.ct__intro h2 {
+  font-size: clamp(2.8rem, 6.4vw, 6rem);
+  font-weight: 650;
+  font-variation-settings: 'wdth' 100;
+  letter-spacing: -0.028em;
 }
 
-.btn-position button img{
-  margin-right: 10px;
+.ct__intro > p {
+  max-width: 44ch;
+  color: var(--fg-dim);
+  font-size: 1.05rem;
 }
 
-.form{
-  padding-top: 24px;
+.ct__direct {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.form p{
-  font-size: 16px;
-  color: #292444;
-  font-weight: 500;
+/* ───────── formulário ───────── */
+.ct__form {
+  padding: clamp(20px, 3vw, 36px);
+  border: 1px solid var(--hair-strong);
+  border-radius: 18px;
+  background: var(--surface);
 }
 
-.button-wpp{
-  background-color: #3EA830;
-  transition: all 0.3s ease;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.button-wpp:hover{
-  background-color: #369428;
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 8px 20px rgba(62, 168, 48, 0.4);
-}
-
-.button-wpp:active {
-  transform: scale(0.95) translateY(0);
-  box-shadow: 0 4px 12px rgba(62, 168, 48, 0.3);
-}
-
-.button-insta{
-  background: linear-gradient(71deg,#972153 10%,#FD378B 44%, #CC29DA 100%);
-  transition: all 0.3s ease;
-}
-
-.button-insta:hover {
-  filter: brightness(1.05);
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 8px 20px rgba(253, 55, 139, 0.4);
-}
-
-.button-insta:active {
-  transform: scale(0.95) translateY(0);
-  box-shadow: 0 4px 12px rgba(253, 55, 139, 0.3);
-}
-
-.form div {
-  margin-bottom: 13px;
-}
-
-.form input, textarea {
-  width: 440px;
-  height: 45px;
-  border-radius: 5px;
-  border: none;
-  outline: #29244417 solid 1px;
-  padding-left: 12px;
-  transition: all 0.3s ease;
-}
-
-.form input:focus, textarea:focus {
-  transform: translateX(5px);
-  box-shadow: 0 0 15px rgba(40, 131, 255, 0.3);
-  border-left: 3px solid #2883FF;
-}
-
-.form textarea {
-  height: 70px;
-  resize: none;
-}
-
-.form button {
-  background-color: #2883FF;
-  color: #ffffff;
-  width: 155px;
-  height: 45px;
-  border: none;
-  border-radius: 7px;
-  transition: all 0.3s ease;
+.f {
   position: relative;
+}
+
+.f input,
+.f textarea {
+  width: 100%;
+  padding: 24px 14px 8px;
+  border: 1.5px solid var(--hair-strong);
+  border-radius: var(--r-ctrl);
+  background: var(--ink-0);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.f input {
+  height: 56px;
+}
+
+.f input:focus,
+.f textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(235, 190, 87, 0.14);
+}
+
+.f label {
+  position: absolute;
+  left: 14px;
+  top: 17px;
+  color: var(--fg-dim);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.35s var(--ease), color 0.25s;
+}
+
+.f input:focus + label,
+.f input:not(:placeholder-shown) + label,
+.f textarea:focus + label,
+.f textarea:not(:placeholder-shown) + label {
+  transform: translateY(-11px) scale(0.78);
+}
+
+.f input:focus + label,
+.f textarea:focus + label {
+  color: var(--gold);
+}
+
+.ct__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--fg-dim);
+}
+
+.progress__bars {
+  display: flex;
+  gap: 4px;
+}
+
+.progress__bars i {
+  position: relative;
+  width: 34px;
+  height: 3px;
+  background: var(--hair-strong);
   overflow: hidden;
 }
 
-.form button::before {
+.progress__bars i::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease);
 }
 
-.form button:hover {
-  background-color: #1a6bcc;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(40, 131, 255, 0.4);
+.progress__bars i.on::after {
+  transform: scaleX(1);
 }
 
-.form button:hover::before {
-  left: 100%;
+button.btn {
+  border: 0;
 }
 
-.form button:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(40, 131, 255, 0.3);
+button.btn.ready {
+  box-shadow: 0 0 0 3px rgba(235, 190, 87, 0.28), 0 1px 0 rgba(255, 255, 255, 0.35) inset;
 }
 
-
-#btn-padding{
-  padding-bottom: 33px;
-  margin: 0;
+@media (max-width: 900px) {
+  .ct__grid {
+    grid-template-columns: 1fr;
+  }
 }

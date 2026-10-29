@@ -1,0 +1,52 @@
+<article class="xp">
+  <header class="xp__head">
+    <div>
+      <h3>Análise de dados</h3>
+      <p>Troque métrica e período. Barras e números transitam.</p>
+    </div>
+  </header>
+
+  <div class="ctl">
+    <div class="segc" role="radiogroup" aria-label="Métrica">
+      <span class="segc__thumb" aria-hidden="true" [style.--i]="kindIndex()"></span>
+      @for (k of kinds; track k.id) {
+        <button type="button" role="radio" [attr.aria-checked]="kind() === k.id" (click)="kind.set(k.id); picked.set(null)">
+          {{ k.label }}
+        </button>
+      }
+    </div>
+    <div class="segc" role="radiogroup" aria-label="Período">
+      <span class="segc__thumb" aria-hidden="true" [style.--i]="rangeIndex()"></span>
+      @for (r of ranges; track r.id) {
+        <button type="button" role="radio" [attr.aria-checked]="range() === r.id" (click)="range.set(r.id); picked.set(null)">
+          {{ r.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="big" aria-live="polite">
+    <strong class="num"><dd-num [value]="shownValue()" /></strong>
+    <span>{{ shownLabel() }}</span>
+    <em [class.neg]="delta() < 0">
+      {{ delta() < 0 ? '−' : '+' }}<dd-num [value]="delta() < 0 ? -delta() : delta()" [decimals]="0" suffix="% no intervalo" />
+    </em>
+  </div>
+
+  <div class="bars" role="group" aria-label="Valores por intervalo">
+    @for (b of bars(); track $index; let i = $index) {
+      <button
+        type="button"
+        class="bar"
+        [class.top]="b.top"
+        [class.on]="picked() === i"
+        [attr.aria-pressed]="picked() === i"
+        [attr.aria-label]="b.label + ': ' + b.v"
+        (click)="toggle(i)"
+      >
+        <span class="bar__col"><i [style.--h]="b.h"></i></span>
+        <span class="bar__lab">{{ b.label }}</span>
+      </button>
+    }
+  </div>
+</article>

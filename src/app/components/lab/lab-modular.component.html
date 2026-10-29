@@ -1,0 +1,34 @@
+<article class="xp">
+  <header class="xp__head">
+    <div>
+      <h3>Interface modular</h3>
+      <p>Troque a visão. Cada módulo se reposiciona com uma mola.</p>
+    </div>
+    <div class="segc" role="radiogroup" aria-label="Modo de visualização">
+      <span class="segc__thumb" aria-hidden="true" [style.--i]="modeIndex()"></span>
+      @for (m of modes; track m.id) {
+        <button type="button" role="radio" [attr.aria-checked]="mode() === m.id" (click)="mode.set(m.id)">
+          {{ m.label }}
+        </button>
+      }
+    </div>
+  </header>
+
+  <div class="tiles" [attr.data-mode]="mode()" ddFlip>
+    @for (t of tiles; track t.id) {
+      <button
+        type="button"
+        class="tile"
+        [class.big]="mode() === 'foco' && focus() === t.id"
+        [attr.data-flip]="t.id"
+        [attr.aria-pressed]="mode() === 'foco' ? focus() === t.id : null"
+        (click)="pick(t.id)"
+      >
+        <span class="tile__label">{{ t.label }}</span>
+        <strong class="tile__value num">{{ t.value }}</strong>
+        <span class="tile__note">{{ t.note }}</span>
+        <span class="tile__bar" aria-hidden="true"><i [style.width.%]="t.pct"></i></span>
+      </button>
+    }
+  </div>
+</article>

@@ -1,0 +1,41 @@
+<article class="xp">
+  <header class="xp__head">
+    <div>
+      <h3>Automação de processos</h3>
+      <p>Simulação de um pedido percorrendo sistemas integrados. Clique em executar.</p>
+    </div>
+    <button type="button" class="btn run" [disabled]="running()" (click)="run()">
+      {{ running() ? 'Executando…' : finished() ? 'Executar de novo' : 'Executar fluxo' }}
+    </button>
+  </header>
+
+  <ol class="flow" aria-label="Etapas da automação">
+    @for (s of steps; track s.title; let i = $index) {
+      <li class="node" [attr.data-state]="states()[i]">
+        <span class="node__dot" aria-hidden="true">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7" /></svg>
+        </span>
+        <span class="node__title">{{ s.title }}</span>
+        <span class="node__sys">{{ s.system }}</span>
+        <span class="visually-state sr-only">{{ states()[i] === 'done' ? 'concluído' : states()[i] === 'run' ? 'em execução' : 'aguardando' }}</span>
+      </li>
+      @if (i < steps.length - 1) {
+        <li class="link" aria-hidden="true" [attr.data-state]="states()[i] === 'done' ? (states()[i + 1] === 'idle' ? 'run' : 'done') : 'idle'"><i></i></li>
+      }
+    }
+  </ol>
+
+  <div class="out">
+    <ul class="log" aria-live="polite" aria-label="Registro da execução">
+      @for (l of log(); track l.t) {
+        <li><time class="num">{{ l.t }}</time><span>{{ l.text }}</span></li>
+      } @empty {
+        <li class="log__empty">O registro de execução aparece aqui.</li>
+      }
+    </ul>
+    <div class="result" [class.on]="finished()" [attr.aria-hidden]="!finished()">
+      <strong>Pedido #2087 concluído</strong>
+      <span>{{ steps.length }} etapas em {{ total }} s, sem intervenção manual.</span>
+    </div>
+  </div>
+</article>

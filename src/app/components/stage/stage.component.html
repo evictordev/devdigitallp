@@ -1,0 +1,50 @@
+<section
+  class="stage"
+  id="inicio"
+  [class.ready]="ready()"
+  [class.static]="reduced()"
+  aria-labelledby="stage-title"
+>
+  <div class="stage__track" #track>
+    <div class="stage__pin">
+      <div class="copy">
+        <p class="copy__brand">
+          <img src="/logo/logonavbar.png" alt="" width="34" height="30" />
+          <span>Dev Digital</span>
+        </p>
+        <h1 id="stage-title" class="copy__title">
+          <span class="mask-line"><span style="--i: 0">Transformamos</span></span>
+          <span class="mask-line"><span style="--i: 1">ideias em</span></span>
+          <span class="mask-line"><span style="--i: 2">software que</span></span>
+          <span class="mask-line"><span style="--i: 3">funciona.</span></span>
+        </h1>
+        <p class="copy__lede">
+          Sistemas web, aplicações sob medida, automações e plataformas SaaS. O painel está sendo montado
+          enquanto você rola a página.
+        </p>
+        <div class="copy__cta">
+          <a class="btn" href="#contato">Pedir um projeto</a>
+          <a class="btn btn--ghost" href="#capacidades">Ver o que construímos</a>
+        </div>
+      </div>
+
+      <div class="scene">
+        <div class="dash-wrap" #dashWrap inert data-live="0">
+          <svg class="links" #linksSvg aria-hidden="true" preserveAspectRatio="none">
+            @for (l of links; track $index) {
+              <line x1="0" y1="0" x2="0" y2="0" />
+            }
+          </svg>
+          <dd-dashboard-demo />
+        </div>
+      </div>
+
+      <ol class="steps" aria-label="Etapas de montagem do painel">
+        @for (s of steps; track s; let i = $index) {
+          <li><i aria-hidden="true"></i><span>{{ s }}</span></li>
+        }
+      </ol>
+      <p class="hint" aria-hidden="true"><span></span>Role para montar</p>
+    </div>
+  </div>
+</section>

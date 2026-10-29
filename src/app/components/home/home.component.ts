@@ -1,22 +1,26 @@
-import { Component } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { BannerComponent } from '../banner/banner.component';
-import { ServicosComponent } from '../servicos/servicos.component';
-import { EscolhaComponent } from '../escolha/escolha.component';
-import { SobreComponent } from '../sobre/sobre.component';
-import { ProcessComponent } from '../process/process.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CapacidadesComponent } from '../capacidades/capacidades.component';
 import { ContatoComponent } from '../contato/contato.component';
 import { FooterComponent } from '../footer/footer.component';
-
-
+import { LabComponent } from '../lab/lab.component';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { ProcessoComponent } from '../processo/processo.component';
+import { StageComponent } from '../stage/stage.component';
 
 @Component({
   selector: 'app-home',
-  standalone:true,
-  imports: [NavbarComponent, BannerComponent, ServicosComponent,EscolhaComponent, SobreComponent, ProcessComponent, ContatoComponent, FooterComponent],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css', './reshome.component.css']
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NavbarComponent, StageComponent, CapacidadesComponent, LabComponent, ProcessoComponent, ContatoComponent, FooterComponent],
+  template: `
+    <dd-navbar />
+    <main>
+      <dd-stage />
+      <dd-capacidades />
+      <dd-lab />
+      <dd-processo />
+      <dd-contato />
+    </main>
+    <dd-footer />
+  `,
 })
-export class HomeComponent {
-
-}
+export class HomeComponent {}

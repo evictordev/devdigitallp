@@ -1,0 +1,95 @@
+:host {
+  display: block;
+}
+
+.ctl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.big {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.big strong {
+  font-family: var(--f-display);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.big span {
+  color: var(--fg-dim);
+}
+
+.big em {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #12804a;
+}
+
+.big em.neg {
+  color: #b2402e;
+}
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  height: 188px;
+}
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--fg-dim);
+  font-size: 0.78rem;
+}
+
+.bar__col {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 6px;
+  background: var(--surface-2);
+  overflow: hidden;
+  transition: background-color 0.25s;
+}
+
+.bar:hover .bar__col {
+  background: #e7eaf0;
+}
+
+.bar__col i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px 6px 0 0;
+  background: var(--blue);
+  transform-origin: bottom;
+  transform: scaleY(var(--h));
+  transition: transform 0.8s var(--ease), background-color 0.4s;
+}
+
+.bar.top .bar__col i {
+  background: var(--gold-2);
+}
+
+.bar.on .bar__col i {
+  background: var(--ink-1);
+}
+
+.bar.on .bar__lab {
+  color: var(--fg);
+  font-weight: 600;
+}

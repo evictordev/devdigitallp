@@ -1,0 +1,155 @@
+<div class="dash" role="group" aria-label="Demonstração de painel de pedidos com dados fictícios">
+  <!-- navegação lateral -->
+  <nav class="panel side" aria-label="Visões do painel" data-p="1">
+    <div class="side__logo" aria-hidden="true"><img src="/logo/logonavbar.png" alt="" width="28" height="25" /></div>
+    <div class="side__list" role="tablist" aria-label="Visão">
+      <span class="side__mark" aria-hidden="true" [style.--i]="viewIndex()"></span>
+      @for (v of views; track v.id) {
+        <button
+          type="button"
+          role="tab"
+          class="side__btn"
+          [attr.aria-selected]="view() === v.id"
+          [attr.aria-label]="v.label"
+          [title]="v.label"
+          (click)="setView(v.id)"
+        >
+          @switch (v.id) {
+            @case ('painel') {
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="2.5" width="6" height="7" rx="1.2"/><rect x="11.5" y="2.5" width="6" height="4" rx="1.2"/><rect x="11.5" y="9.5" width="6" height="8" rx="1.2"/><rect x="2.5" y="12.5" width="6" height="5" rx="1.2"/></svg>
+            }
+            @case ('pedidos') {
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h9" stroke-linecap="round"/></svg>
+            }
+            @case ('atividade') {
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 10h3.5l2-5.5 3.5 11 2-5.5h4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            }
+          }
+        </button>
+      }
+    </div>
+  </nav>
+
+  <!-- barra superior -->
+  <header class="panel bar" data-p="2">
+    <div class="bar__title">
+      <strong>{{ views[viewIndex()].label }}</strong>
+      <span>Loja Aurora · dados fictícios</span>
+    </div>
+    <div class="seg" role="radiogroup" aria-label="Período">
+      <span class="seg__thumb" aria-hidden="true" [style.--i]="periodIndex()"></span>
+      @for (p of periods; track p.id) {
+        <button type="button" role="radio" [attr.aria-checked]="period() === p.id" (click)="period.set(p.id)">
+          {{ p.label }}
+        </button>
+      }
+    </div>
+  </header>
+
+  <!-- indicadores -->
+  <section class="panel kpis" aria-label="Indicadores" data-p="3">
+    @for (k of kpis(); track k.id) {
+      <div class="kpi">
+        <span class="kpi__label">{{ k.label }}</span>
+        <strong class="kpi__value">
+          <dd-num [value]="k.value" [decimals]="k.decimals" [prefix]="k.prefix" [suffix]="k.suffix" />
+        </strong>
+        <span class="kpi__delta" [class.neg]="k.delta < 0">
+          <svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M5 1.5 9 8H1z" fill="currentColor" [style.transform]="k.delta < 0 ? 'rotate(180deg)' : 'none'" style="transform-origin:center;transition:transform .5s var(--ease)"/></svg>
+          <dd-num [value]="k.delta < 0 ? -k.delta : k.delta" [decimals]="1" suffix="%" />
+        </span>
+      </div>
+    }
+  </section>
+
+  <!-- gráfico -->
+  <section class="panel chart" aria-label="Gráfico" data-p="4">
+    <div class="chart__head">
+      <div class="seg seg--sm" role="radiogroup" aria-label="Métrica">
+        <span class="seg__thumb" aria-hidden="true" [style.--i]="metric() === 'receita' ? 0 : 1"></span>
+        <button type="button" role="radio" [attr.aria-checked]="metric() === 'receita'" (click)="metric.set('receita')">Receita</button>
+        <button type="button" role="radio" [attr.aria-checked]="metric() === 'pedidos'" (click)="metric.set('pedidos')">Pedidos</button>
+      </div>
+      <span class="chart__max">
+        pico
+        <b><dd-num [value]="max()" [decimals]="units[metric()].decimals" [prefix]="units[metric()].prefix" [suffix]="units[metric()].suffix" /></b>
+      </span>
+    </div>
+    <div
+      class="chart__plot"
+      tabindex="0"
+      role="img"
+      [attr.aria-label]="'Série de ' + metric() + ' no período selecionado. Use as setas para inspecionar os pontos.'"
+      (pointermove)="onChartMove($event)"
+      (pointerleave)="hover.set(null)"
+      (blur)="hover.set(null)"
+      (keydown)="arrowKeys($event)"
+    >
+      <svg viewBox="0 0 400 150" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="dd-area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="var(--gold)" stop-opacity=".28" />
+            <stop offset="1" stop-color="var(--gold)" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <path class="chart__area" [attr.d]="area()" fill="url(#dd-area)" />
+        <path class="chart__line" [attr.d]="line()" fill="none" />
+      </svg>
+      @if (hoverInfo(); as h) {
+        <span class="chart__guide" [style.left.%]="h.left"></span>
+        <span class="chart__dot" [style.left.%]="h.left" [style.top.%]="h.top"></span>
+        <span class="chart__tip" [class.flip]="h.left > 62" [style.left.%]="h.left" [style.top.%]="h.top">{{ h.label }}</span>
+      }
+    </div>
+    <div class="chart__ticks" aria-hidden="true">
+      @for (t of ticks(); track t) {
+        <span>{{ t }}</span>
+      }
+    </div>
+  </section>
+
+  <!-- tabela / atividade -->
+  <section class="panel table" aria-label="Pedidos e atividade" data-p="5">
+    @if (view() === 'atividade') {
+      <h3 class="table__title">Automações em execução</h3>
+      <ul class="feed">
+        @for (a of activity; track a.id; let i = $index) {
+          <li class="feed__row" [style.--n]="i">
+            <span class="feed__dot" [attr.data-tone]="a.tone" aria-hidden="true"></span>
+            <span class="feed__text">{{ a.text }}</span>
+            <time class="feed__time">{{ a.time }}</time>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="table__head">
+        <div class="chips" role="group" aria-label="Filtrar por status">
+          @for (s of statuses; track s.id) {
+            <button type="button" class="chip" [attr.aria-pressed]="status() === s.id" (click)="status.set(s.id)">
+              {{ s.label }}
+            </button>
+          }
+        </div>
+      </div>
+      <div class="rows" role="table" aria-label="Pedidos recentes">
+        <div class="rows__hd" role="row">
+          <button type="button" role="columnheader" [attr.aria-sort]="ariaSort('id')" (click)="toggleSort('id')">Pedido</button>
+          <span role="columnheader">Cliente</span>
+          <button type="button" role="columnheader" class="r" [attr.aria-sort]="ariaSort('total')" (click)="toggleSort('total')">Valor</button>
+          <span role="columnheader" class="r">Status</span>
+        </div>
+        <div class="rows__body" ddFlip="snappy">
+          @for (o of orders(); track o.id) {
+            <div class="row" role="row" [attr.data-flip]="o.id">
+              <span role="cell" class="num">#{{ o.id }}</span>
+              <span role="cell" class="row__who">{{ o.customer }}</span>
+              <span role="cell" class="num r">{{ money(o.total) }}</span>
+              <span role="cell" class="r"><i class="pill" [attr.data-s]="o.status">{{ statusLabel[o.status] }}</i></span>
+            </div>
+          }
+        </div>
+        <p class="rows__foot" aria-live="polite">{{ orders().length }} de {{ totalFiltered() }} pedidos</p>
+      </div>
+    }
+  </section>
+</div>

@@ -1,0 +1,438 @@
+:host {
+  display: block;
+  --spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring-ms: 520ms;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.cell {
+  grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  background: var(--surface-2);
+  min-width: 0;
+}
+
+.cell.wide {
+  grid-column: span 5;
+}
+
+.cell.wide.acc-cell {
+  grid-column: span 4;
+}
+
+.cell h4 {
+  font-family: var(--f-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--fg-dim);
+}
+
+.cell__note {
+  color: var(--fg-dim);
+  font-size: 0.8rem;
+  min-height: 2.6em;
+}
+
+/* ───────── botão: ocioso → carregando → salvo ───────── */
+.save {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.save__spin,
+.save__ok {
+  position: absolute;
+  left: 18px;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.25s, transform var(--spring-ms) var(--spring);
+}
+
+.save__spin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+}
+
+.save[data-state='saving'] .save__spin {
+  opacity: 1;
+  transform: none;
+  animation: spin 0.7s linear infinite;
+}
+
+.save[data-state='saved'] .save__ok {
+  opacity: 1;
+  transform: none;
+}
+
+.save__label {
+  transition: transform var(--spring-ms) var(--spring);
+}
+
+.save[data-state='saving'] .save__label,
+.save[data-state='saved'] .save__label {
+  transform: translateX(14px);
+}
+
+.save[data-state='saved'] {
+  background: #12804a;
+  color: #fff;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ───────── preço ───────── */
+.price {
+  display: flex;
+  flex-direction: column;
+}
+
+.price strong {
+  font-family: var(--f-display);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.price span {
+  color: var(--fg-dim);
+  font-size: 0.8rem;
+}
+
+/* ───────── interruptor ───────── */
+.sw {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.sw input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.sw__track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--hair-strong);
+  transition: background-color 0.3s;
+}
+
+.sw__track i {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 16, 38, 0.35);
+  transition: transform var(--spring-ms) var(--spring), width 0.2s;
+}
+
+.sw:active .sw__track i {
+  width: 24px;
+}
+
+.sw input:checked + .sw__track {
+  background: var(--blue);
+}
+
+.sw input:checked + .sw__track i {
+  transform: translateX(18px);
+}
+
+.sw:active input:checked + .sw__track i {
+  transform: translateX(14px);
+}
+
+.sw input:focus-visible + .sw__track {
+  outline: 2px solid var(--azure);
+  outline-offset: 3px;
+}
+
+/* ───────── campo ───────── */
+.field {
+  position: relative;
+  width: 100%;
+}
+
+.field input {
+  width: 100%;
+  height: 52px;
+  padding: 18px 40px 0 14px;
+  border: 1.5px solid var(--hair-strong);
+  border-radius: var(--r-ctrl);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.field input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(0, 59, 140, 0.12);
+}
+
+.field label {
+  position: absolute;
+  left: 14px;
+  top: 15px;
+  color: var(--fg-dim);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.35s var(--ease), color 0.25s;
+}
+
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  transform: translateY(-9px) scale(0.78);
+}
+
+.field[data-state='bad'] input {
+  border-color: #b2402e;
+  box-shadow: 0 0 0 4px rgba(178, 64, 46, 0.1);
+}
+
+.field[data-state='ok'] input {
+  border-color: #12804a;
+}
+
+.field__ok {
+  position: absolute;
+  right: 14px;
+  top: 18px;
+  color: #12804a;
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity 0.25s, transform var(--spring-ms) var(--spring);
+}
+
+.field[data-state='ok'] .field__ok {
+  opacity: 1;
+  transform: none;
+}
+
+.field__msg {
+  min-height: 2.6em;
+  font-size: 0.8rem;
+  color: var(--fg-dim);
+}
+
+.field[data-state='bad'] ~ .field__msg {
+  color: #b2402e;
+}
+
+/* ───────── abas ───────── */
+.tabs {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--hair-strong);
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabs button {
+  flex: 1 0 auto;
+  padding: 8px 14px 12px;
+  border: 0;
+  background: none;
+  color: var(--fg-dim);
+  font-weight: 500;
+  transition: color 0.25s;
+}
+
+.tabs button[aria-selected='true'] {
+  color: var(--fg);
+}
+
+.tabs__ink {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: calc(100% / 3);
+  background: var(--blue);
+  transform: translateX(calc(var(--i) * 100%));
+  transition: transform 0.6s var(--ease);
+}
+
+.tabs__panel p {
+  max-width: 52ch;
+  animation: fade-in 0.5s var(--ease) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ───────── acordeão ───────── */
+.acc {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acc__item {
+  border-top: 1px solid var(--hair-strong);
+}
+
+.acc__item h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.acc__item button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.acc__item svg {
+  flex: none;
+  transition: transform var(--spring-ms) var(--spring);
+}
+
+.acc__item.open svg {
+  transform: rotate(135deg);
+}
+
+.acc__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease);
+}
+
+.acc__body > div {
+  overflow: hidden;
+}
+
+.acc__body p {
+  padding-bottom: 12px;
+  color: var(--fg-dim);
+  font-size: 0.92rem;
+}
+
+.acc__item.open .acc__body {
+  grid-template-rows: 1fr;
+}
+
+/* ───────── cartão com profundidade ───────── */
+.depth {
+  --rx: 0deg;
+  --ry: 0deg;
+  --px: 50%;
+  --py: 30%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 130px;
+  padding: 16px;
+  border-radius: 14px;
+  background: linear-gradient(150deg, var(--blue), var(--ink-1));
+  color: #fff;
+  overflow: hidden;
+  transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+  box-shadow: 0 10px 20px -14px rgba(0, 16, 38, 0.7);
+}
+
+.depth:hover,
+.depth:focus-visible,
+.depth:active {
+  box-shadow: 0 26px 34px -20px rgba(0, 16, 38, 0.8);
+}
+
+.depth:active {
+  transform: perspective(700px) translateY(-4px) scale(1.02);
+}
+
+.depth strong {
+  font-family: var(--f-display);
+  font-size: 2rem;
+  color: var(--gold);
+}
+
+.depth > span:last-child {
+  font-size: 0.8rem;
+  color: #cfd8e3;
+}
+
+.depth__shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(180px circle at var(--px) var(--py), rgba(255, 255, 255, 0.22), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.depth:hover .depth__shine {
+  opacity: 1;
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cell,
+  .cell.wide.acc-cell {
+    grid-column: span 1;
+  }
+
+  .cell.wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cell,
+  .cell.wide,
+  .cell.wide.acc-cell {
+    grid-column: auto;
+  }
+}

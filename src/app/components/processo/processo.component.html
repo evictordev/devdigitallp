@@ -1,0 +1,34 @@
+<section class="pr section" id="processo" aria-labelledby="pr-title">
+  <div class="wrap pr__grid">
+    <div class="pr__intro">
+      <h2 id="pr-title" ddReveal="mask">
+        <span class="mask-line"><span style="--i: 0">Do papel</span></span>
+        <span class="mask-line"><span style="--i: 1">ao ar.</span></span>
+      </h2>
+      <p ddReveal>
+        Somos um time jovem que une criatividade e tecnologia para transformar ideias em soluções digitais sob
+        medida. Trabalhamos com transparência, agilidade e foco no que importa: fazer o seu projeto sair do papel
+        com qualidade e impacto.
+      </p>
+      <ul class="pr__promises">
+        @for (p of promises; track p.title; let i = $index) {
+          <li ddReveal [style.--i]="i">
+            <strong>{{ p.title }}</strong>
+            <span>{{ p.text }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <ol class="rail" aria-label="Etapas do projeto">
+      <span class="rail__line" aria-hidden="true"><i></i></span>
+      @for (s of steps; track s.title; let i = $index) {
+        <li class="step" [style.--at]="(i + 0.4) / steps.length">
+          <span class="step__no num" aria-hidden="true">{{ i + 1 }}</span>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.text }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

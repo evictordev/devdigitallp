@@ -1,7 +1,59 @@
-.element-position {
-  text-align: center;
+:host {
+  display: block;
 }
 
-.img-position {
-  padding: 5px 0;
+.ft {
+  overflow: hidden;
+  padding: 56px 0 28px;
+  background: var(--night);
+  color: var(--fg);
+}
+
+.ft__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 40px;
+}
+
+.ft__row p {
+  max-width: 34ch;
+  color: var(--fg-dim);
+}
+
+.ft nav {
+  display: flex;
+  gap: 24px;
+}
+
+.ft nav a {
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hair-strong);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.ft nav a:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.ft__mark {
+  margin: 56px 0 8px;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 75;
+  font-size: clamp(4rem, 20.5vw, 17rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(162, 177, 186, 0.28);
+  user-select: none;
+}
+
+.ft__copy {
+  color: var(--fg-dim);
+  font-size: 0.85rem;
 }

@@ -1,0 +1,79 @@
+<section class="cap section" id="capacidades" aria-labelledby="cap-title">
+  <div class="wrap">
+    <header class="cap__head">
+      <h2 id="cap-title" ddReveal="mask">
+        <span class="mask-line"><span style="--i: 0">Uma base,</span></span>
+        <span class="mask-line"><span style="--i: 1">seis soluções.</span></span>
+      </h2>
+      <p ddReveal>Escolha uma capacidade e veja a mesma composição se reorganizar para ela.</p>
+    </header>
+
+    <div class="cap__body">
+      <div class="cap__list" role="tablist" aria-orientation="vertical" aria-label="Capacidades" (keydown)="onKey($event)">
+        @for (c of caps; track c.id; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            class="cap__tab"
+            [id]="'cap-tab-' + c.id"
+            [attr.aria-selected]="index() === i"
+            [attr.aria-controls]="'cap-stage'"
+            [attr.tabindex]="index() === i ? 0 : -1"
+            (click)="select(i)"
+          >
+            <span class="cap__name">{{ c.title }}</span>
+            <span class="cap__text"><span>{{ c.text }}</span></span>
+          </button>
+        }
+      </div>
+
+      <div class="cap__stage" id="cap-stage" role="tabpanel" [attr.aria-labelledby]="'cap-tab-' + cap().id" [attr.data-mode]="cap().id">
+        <svg class="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          @for (d of edges(); track $index) {
+            <path [attr.d]="d" class="edge" />
+            <path [attr.d]="d" class="edge edge--flow" />
+          }
+        </svg>
+
+        @for (b of slots(); track $index; let i = $index) {
+          <div
+            class="blk"
+            [class.hot]="b.hot"
+            [attr.data-kind]="b.kind"
+            [style.--x]="b.x"
+            [style.--y]="b.y"
+            [style.--w]="b.w"
+            [style.--h]="b.h"
+            [style.--r]="b.r ?? 0"
+            [style.--o]="b.o"
+            [style.--n]="i"
+            aria-hidden="true"
+          >
+            @for (k of [b.kind + (b.t ?? '')]; track k) {
+              <div class="inner">
+                @switch (b.kind) {
+                  @case ('bar') { <u></u><u></u><u></u><b></b> }
+                  @case ('hero') { <i class="l w90"></i><i class="l w60"></i><i class="l w40 dim"></i> }
+                  @case ('media') { <span class="sun"></span><span class="hill"></span> }
+                  @case ('card') { <span class="sq"></span><i class="l w80"></i><i class="l w50 dim"></i> }
+                  @case ('nav') { <i class="l w70"></i><i class="l w50 dim"></i><i class="l w60 dim"></i><i class="l w40 dim"></i><i class="l w55 dim"></i> }
+                  @case ('form') { <i class="l w30 dim"></i><i class="fld"></i><i class="l w40 dim"></i><i class="fld"></i><i class="act"></i> }
+                  @case ('detail') { <span class="av"></span><i class="l w70"></i><i class="l w50 dim"></i><i class="l w60 dim"></i> }
+                  @case ('list') { <span class="row"><u></u><i class="l w50"></i><b></b></span><span class="row"><u></u><i class="l w40"></i><b></b></span><span class="row"><u></u><i class="l w60"></i><b></b></span> }
+                  @case ('node') { <span class="port in"></span><strong>{{ b.t }}</strong><span class="port out"></span> }
+                  @case ('plan') { <strong>{{ b.t }}</strong><i class="price"></i><i class="l w80 dim"></i><i class="l w70 dim"></i><i class="l w75 dim"></i><i class="act"></i> }
+                  @case ('kpi') { <i class="l w50 dim"></i><i class="big"></i><i class="l w30 gold"></i> }
+                  @case ('chart') { <svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0,34 C12,30 16,20 28,22 S46,32 58,18 S80,8 100,6 L100,40 L0,40Z" /><path class="ln" d="M0,34 C12,30 16,20 28,22 S46,32 58,18 S80,8 100,6" /></svg> }
+                  @case ('table') { <i class="l w90"></i><i class="l w80 dim"></i><i class="l w90 dim"></i><i class="l w70 dim"></i><i class="l w85 dim"></i> }
+                  @case ('btn') { <strong>{{ b.t }}</strong> }
+                  @case ('toast') { <span class="tick"></span><i class="l w70"></i> }
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <p class="cap__caption" aria-live="polite">{{ cap().text }}</p>
+    </div>
+  </div>
+</section>

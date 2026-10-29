@@ -1,48 +1,60 @@
-<div class="elements-position">
-  <div data-aos="zoom-out-right" data-aos-duration="1500">
-    <div class="img-position">
-      <img src="/logo/logocontato.png" alt="">
+<section class="ct section" id="contato" aria-labelledby="ct-title">
+  <div class="wrap ct__grid">
+    <div class="ct__intro">
+      <h2 id="ct-title" ddReveal="mask">
+        <span class="mask-line"><span style="--i: 0">O próximo</span></span>
+        <span class="mask-line"><span style="--i: 1">painel pode</span></span>
+        <span class="mask-line"><span style="--i: 2">ser o seu.</span></span>
+      </h2>
+      <p ddReveal>
+        Conte o que você precisa construir. Respondemos com os próximos passos. Se preferir conversar agora, chame
+        no WhatsApp ou no Instagram.
+      </p>
+      <div class="ct__direct" ddReveal [style.--i]="1">
+        <a class="btn" [href]="whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.8a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88M20.46 3.49A11.8 11.8 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.41"/></svg>
+          Chamar no WhatsApp
+        </a>
+        <a class="btn btn--ghost" [href]="instagram" target="_blank" rel="noopener">Instagram &#64;dev_digitall</a>
+      </div>
     </div>
-  </div>
-  <div class="text-position">
-    <h1>Pronto para começar
-        seu <span>projeto?</span></h1>
 
-    <p>Estamos prontos para ouvir suas ideias e
-       transformá-las em soluções digitais. Entre em
-       contato agora mesmo pelo nosso WhatsApp ou
-       Instagram.
-    </p>
-    <div class="btn-position">
-      <div class="btn-wpp">
-        <a href="https://api.whatsapp.com/send?phone=+558592778126&amp;text=Olá, estou interessado em começar um projeto "><button class="button-wpp"><img src="/icon/wppicon.png"  alt="">Whatsapp</button></a>
-      </div>
-      <div class="btn-instagram">
-        <a href="https://www.instagram.com/dev_digitall/"><button class="button-insta"><img src="/icon/instaicon.png" alt="">Instagram</button></a>
-      </div>
+    <div class="ct__form">
+      <form action="https://formsubmit.co/emanuelpsn07@gmail.com" method="post" aria-label="Pedir um projeto">
+        @if (next()) {
+          <input type="hidden" name="_next" [value]="next()" />
+        }
+        <input type="hidden" name="_captcha" value="false" />
+
+        <div class="f">
+          <input id="f-nome" name="Nome" type="text" placeholder=" " required autocomplete="name" (input)="bind(nome, $event)" />
+          <label for="f-nome">Nome</label>
+        </div>
+        <div class="f">
+          <input id="f-email" name="Email" type="email" placeholder=" " required autocomplete="email" (input)="bind(email, $event)" />
+          <label for="f-email">E-mail</label>
+        </div>
+        <div class="f">
+          <input id="f-fone" name="Telefone" type="tel" placeholder=" " required autocomplete="tel" mask="(00) 00000-0000" (input)="bind(fone, $event)" />
+          <label for="f-fone">Telefone</label>
+        </div>
+        <div class="f f--area">
+          <textarea id="f-texto" name="Descrição" rows="4" placeholder=" " required (input)="bind(texto, $event)"></textarea>
+          <label for="f-texto">Conte brevemente o projeto</label>
+        </div>
+
+        <div class="ct__foot">
+          <div class="progress" aria-live="polite">
+            <span class="progress__bars" aria-hidden="true">
+              @for (f of fields(); track f.id) {
+                <i [class.on]="f.done"></i>
+              }
+            </span>
+            <span class="progress__label">{{ status() }}</span>
+          </div>
+          <button type="submit" class="btn" [class.ready]="count() === 4">Enviar pedido</button>
+        </div>
+      </form>
     </div>
   </div>
-  <div class="form">
-    <form action="https://formsubmit.co/emanuelpsn07@gmail.com" method="post">
-      <p>Ou envie sua mensagem por e-mail e fale com a<br>
-         nossa equipe!</p>
-      <input type="hidden" name="_next" value="http://localhost:4200/obrigado">
-      <input type="hidden" name="_captcha" value="false">
-      <div>
-        <input type="text" name="Nome" placeholder="Nome" required>
-      </div>
-      <div>
-        <input type="email" name="Email" placeholder="Email" required>
-      </div>
-      <div>
-        <input type="tel" name="Telefone" placeholder="Telefone" required  mask="(00) 00000-0000">
-      </div>
-      <div>
-        <textarea name="Descrição" placeholder="Breve descrição do projeto" required></textarea>
-      </div>
-      <div id="btn-padding">
-        <button type="submit">Enviar</button>
-      </div>
-    </form>
-  </div>
-</div>
+</section>

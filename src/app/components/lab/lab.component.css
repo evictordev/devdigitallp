@@ -1,0 +1,47 @@
+.lab {
+  padding: clamp(80px, 12vw, 160px) 0;
+}
+
+.lab__head {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: end;
+  gap: 24px 64px;
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.lab__title {
+  font-size: clamp(2.6rem, 6vw, 5.4rem);
+  font-weight: 650;
+  font-variation-settings: 'wdth' 100;
+  letter-spacing: -0.028em;
+}
+
+.lab__lede {
+  max-width: 42ch;
+  color: var(--fg-dim);
+  font-size: 1.05rem;
+}
+
+/* composição assimétrica: larguras diferentes, não uma grade de cards iguais */
+.lab__board {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.b-modular { grid-column: 1 / span 7; }
+.b-analytics { grid-column: 8 / span 5; }
+.b-flow { grid-column: 1 / span 12; }
+.b-micro { grid-column: 1 / span 12; }
+
+@media (max-width: 1000px) {
+  .lab__head {
+    grid-template-columns: 1fr;
+  }
+
+  .b-modular,
+  .b-analytics {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,73 +1,157 @@
-.navbar{
-  background: linear-gradient(109deg, #0E092A 31%, #0B2059 61%, #092B6F 83%);
-  height: 70px;
-  width: 100%;
-  z-index: 1000;
+:host {
+  display: block;
 }
 
-.container-fluid{
+.nav {
+  position: fixed;
+  z-index: 50;
+  inset: 0 0 auto 0;
+  height: var(--nav-h);
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+}
 
+.nav.solid {
+  background: rgba(0, 16, 38, 0.78);
+  border-color: var(--hair);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.nav__in {
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 
-.itens-position {
+.nav__brand {
   display: flex;
   align-items: center;
-  gap: 20px; /* Espaçamento entre logo e botão de menu */
-}
-
-
-.nav-link{
-  color: #fff;
-  font-size: 18px;
-  font-weight: 300;
-  margin-right: 30px;
-}
-
-.nav-link:hover{
-  color: #EBBE57;
-}
-
-.nav-link:focus{
-  color: #EBBE57;
-}
-
-#button-warning{
-  background-color: #EBBE57;
-  border: none;
-  color: #130E31;
-  border-radius: 7px;
-  width: 150px;
-  height: 40px;
-  font-size: 16px;
-  font-weight: 500;
-  text-align: center;
+  gap: 10px;
+  color: var(--fg);
   text-decoration: none;
-  background-color: #EBBE57;
-  color: #000;
-  cursor: pointer;
-  transition: all 0.3s ease
+  font-family: var(--f-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
-#button-warning::before{
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 3vw, 36px);
+}
+
+.nav__links > a:not(.btn) {
+  position: relative;
+  padding: 6px 0;
+  color: var(--fg-dim);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.25s;
+}
+
+.nav__links > a:not(.btn)::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  transition: left 0.5s;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease);
 }
-#button-warning:hover {
-  background-color: #d7a940;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(235, 190, 87, 0.4);
+
+.nav__links > a:not(.btn):hover,
+.nav__links > a.on {
+  color: var(--fg);
 }
-#button-warnign:hover::before {
-  left: 100%;
+
+.nav__links > a.on::after,
+.nav__links > a:not(.btn):hover::after {
+  transform: scaleX(1);
 }
-#button-warning:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(235, 190, 87, 0.3);
+
+.nav__cta {
+  min-height: 40px;
+  padding: 0 1.1rem;
+  font-size: 0.9rem;
+}
+
+.nav__toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: var(--fg);
+}
+
+.nav__toggle span {
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform 0.45s var(--ease);
+}
+
+.nav__toggle span:first-child {
+  top: 17px;
+}
+
+.nav__toggle span:last-child {
+  top: 25px;
+}
+
+.nav__toggle[aria-expanded='true'] span:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.nav__toggle[aria-expanded='true'] span:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+@media (max-width: 760px) {
+  .nav__toggle {
+    display: block;
+  }
+
+  .nav__links {
+    position: fixed;
+    inset: var(--nav-h) 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px var(--gutter) 24px;
+    background: rgba(0, 16, 38, 0.97);
+    border-bottom: 1px solid var(--hair);
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    transition: clip-path 0.5s var(--ease), visibility 0s 0.5s;
+  }
+
+  .nav__links.open {
+    clip-path: inset(0);
+    visibility: visible;
+    transition: clip-path 0.5s var(--ease);
+  }
+
+  .nav__links > a:not(.btn) {
+    padding: 16px 0;
+    font-size: 1.15rem;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .nav__links > a:not(.btn)::after {
+    display: none;
+  }
+
+  .nav__cta {
+    margin-top: 16px;
+  }
 }

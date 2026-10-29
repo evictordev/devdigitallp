@@ -1,17 +1,9 @@
-import * as AOS from 'aos';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from "./components/home/home.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HomeComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [RouterOutlet],
+  template: '<router-outlet />',
 })
-export class AppComponent {
-  title = 'Dev Digital';
-  ngOnInit() {
-    AOS.init();
-  }
-}
+export class AppComponent {}

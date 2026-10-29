@@ -1,0 +1,129 @@
+<article class="xp">
+  <header class="xp__head">
+    <div>
+      <h3>Microinterações</h3>
+      <p>Os detalhes pequenos recebem o mesmo cuidado que a tela inteira.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- botão com estados -->
+    <div class="cell">
+      <h4>Botão com resposta</h4>
+      <button type="button" class="save btn" [attr.data-state]="save()" [attr.aria-busy]="save() === 'saving'" (click)="doSave()">
+        <span class="save__spin" aria-hidden="true"></span>
+        <svg class="save__ok" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+        <span class="save__label">{{ save() === 'idle' ? 'Salvar alterações' : save() === 'saving' ? 'Salvando' : 'Salvo' }}</span>
+      </button>
+      <p class="cell__note" aria-live="polite">{{ save() === 'saved' ? 'Alterações salvas.' : 'Pressione para ver o estado de carregamento e o de sucesso.' }}</p>
+    </div>
+
+    <!-- seletor de plano -->
+    <div class="cell">
+      <h4>Seletor animado</h4>
+      <div class="segc" role="radiogroup" aria-label="Cobrança">
+        <span class="segc__thumb" aria-hidden="true" [style.--i]="billing() === 'mensal' ? 0 : 1" style="--n: 2"></span>
+        <button type="button" role="radio" [attr.aria-checked]="billing() === 'mensal'" (click)="billing.set('mensal')">Mensal</button>
+        <button type="button" role="radio" [attr.aria-checked]="billing() === 'anual'" (click)="billing.set('anual')">Anual</button>
+      </div>
+      <p class="price">
+        <strong><dd-num [value]="billing() === 'mensal' ? 49 : 39" prefix="R$ " [ms]="500" /></strong>
+        <span>por mês, exemplo fictício</span>
+      </p>
+    </div>
+
+    <!-- toggles -->
+    <div class="cell">
+      <h4>Interruptores</h4>
+      <label class="sw">
+        <input type="checkbox" role="switch" [checked]="notify()" (change)="notify.set(!notify())" />
+        <span class="sw__track" aria-hidden="true"><i></i></span>
+        <span>Avisar por WhatsApp</span>
+      </label>
+      <label class="sw">
+        <input type="checkbox" role="switch" [checked]="sync()" (change)="sync.set(!sync())" />
+        <span class="sw__track" aria-hidden="true"><i></i></span>
+        <span>Sincronizar com o ERP</span>
+      </label>
+    </div>
+
+    <!-- input -->
+    <div class="cell">
+      <h4>Campo com validação</h4>
+      <div class="field" [attr.data-state]="emailState">
+        <input
+          id="lab-email"
+          type="email"
+          placeholder=" "
+          autocomplete="off"
+          [value]="email()"
+          [attr.aria-invalid]="emailState === 'bad'"
+          aria-describedby="lab-email-msg"
+          (input)="onInput($event)"
+          (blur)="touched.set(true)"
+        />
+        <label for="lab-email">E-mail</label>
+        <svg class="field__ok" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+      </div>
+      <p class="field__msg" id="lab-email-msg" aria-live="polite">
+        <span>{{ emailState === 'bad' ? 'Use um e-mail completo, como nome@empresa.com.' : emailState === 'ok' ? 'Formato válido.' : '' }}</span>
+      </p>
+    </div>
+
+    <!-- abas -->
+    <div class="cell wide">
+      <h4>Abas com indicador</h4>
+      <div class="tabs" role="tablist" aria-label="Princípios" (keydown)="tabKey($event)">
+        <span class="tabs__ink" aria-hidden="true" [style.--i]="tab()"></span>
+        @for (t of tabs; track t.label; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            [id]="'lab-tab-' + i"
+            [attr.aria-selected]="tab() === i"
+            [attr.aria-controls]="'lab-panel'"
+            [attr.tabindex]="tab() === i ? 0 : -1"
+            (click)="tab.set(i)"
+          >
+            {{ t.label }}
+          </button>
+        }
+      </div>
+      <div class="tabs__panel" id="lab-panel" role="tabpanel" [attr.aria-labelledby]="'lab-tab-' + tab()">
+        @for (t of [tabs[tab()]]; track t.label) {
+          <p>{{ t.text }}</p>
+        }
+      </div>
+    </div>
+
+    <!-- acordeão -->
+    <div class="cell wide acc-cell">
+      <h4>Itens expansíveis</h4>
+      <ul class="acc">
+        @for (f of faq; track f.q; let i = $index) {
+          <li class="acc__item" [class.open]="open() === i">
+            <h5>
+              <button type="button" [attr.aria-expanded]="open() === i" [attr.aria-controls]="'lab-acc-' + i" (click)="toggleFaq(i)">
+                {{ f.q }}
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8h10M8 3v10" /></svg>
+              </button>
+            </h5>
+            <div class="acc__body" [id]="'lab-acc-' + i" role="region">
+              <div><p>{{ f.a }}</p></div>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- cartão com profundidade -->
+    <div class="cell">
+      <h4>Profundidade ao toque</h4>
+      <div class="depth" tabindex="0" (pointermove)="tilt($event)" (pointerleave)="untilt($event)">
+        <span class="depth__shine" aria-hidden="true"></span>
+        <strong>dd</strong>
+        <span>Passe o cursor. No celular, toque para elevar.</span>
+      </div>
+    </div>
+  </div>
+</article>
